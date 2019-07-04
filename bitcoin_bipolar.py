@@ -3,7 +3,6 @@ from bitcoin import valor_btc
 from money.money import Money
 from money.currency import Currency
 import pickle
-import random
 from datetime import datetime
 
 
@@ -20,14 +19,14 @@ if __name__ == '__main__':
         valor_atual = valor_btc()
         diferenca = round(abs(valor_atual - ultimo_valor), 2)
 
-        if diferenca > random.randrange(50, 600):
+        if diferenca > 100:
             valor_reais = Money(str(valor_atual), Currency.BRL).format('pt_BR')
             hora = datetime.now().strftime('%H:%M')
 
             if valor_atual > ultimo_valor:
                 msg = "Bitcoin subiu :) - {} às {}".format(valor_reais, hora)
                 twittar(msg)
-            else:
+            elif ultimo_valor > valor_atual:
                 msg = "Bitcoin caiu :( - {} às {}".format(valor_reais, hora)
                 twittar(msg)
         else:
