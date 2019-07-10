@@ -34,9 +34,13 @@ if __name__ == '__main__':
                 pickle.dump(valor_atual, db, protocol=pickle.HIGHEST_PROTOCOL)
         else:
             valor_atual = valor_btc()
+            # detecta problema na API, dorme por 10 minutos e continua o loop
+            if not valor_atual:
+                time.sleep(600)
+                continue
             diferenca = round(abs(valor_atual - ultimo_valor), 2)
 
-            if diferenca > 800:
+            if diferenca > 500:
                 valor_reais = Money(str(valor_atual), Currency.BRL).format(
                     'pt_BR')
                 hora = datetime.now().strftime('%H:%M')
@@ -56,6 +60,6 @@ if __name__ == '__main__':
             else:
                 print('Diferença insignificante para ser postada.')
 
-            time.sleep(300)
+            time.sleep(450)
 
     print("Parando execução.")
