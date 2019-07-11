@@ -42,7 +42,7 @@ if __name__ == '__main__':
 
                 diferenca = round(abs(valor_atual - ultimo_valor), 2)
 
-                if diferenca > 500:
+                if diferenca > 600:
                     valor_reais = Money(str(valor_atual), Currency.BRL).format(
                         'pt_BR')
                     hora = datetime.now().strftime('%H:%M')
@@ -50,12 +50,20 @@ if __name__ == '__main__':
                     if valor_atual > ultimo_valor:
                         msg = "Bitcoin subiu :) - {} às {}".format(valor_reais,
                                                                    hora)
-                        twittar(msg)
+                        try:
+                            twittar(msg)
+                        except:
+                            time.sleep(900)
+                            continue
                         print(msg)
                     elif ultimo_valor > valor_atual:
                         msg = "Bitcoin caiu :( - {} às {}".format(valor_reais,
                                                                   hora)
-                        twittar(msg)
+                        try:
+                            twittar(msg)
+                        except:
+                            time.sleep(900)
+                            continue
                         print(msg)
                     with open('ultimo_valor.db', 'wb') as db:
                         pickle.dump(valor_atual, db,
