@@ -1,3 +1,4 @@
+import locale
 import os
 import pickle
 import signal
@@ -8,8 +9,10 @@ from random import randint
 from money.currency import Currency
 from money.money import Money
 
-from bitcoin import valor_btc
+from bitcoin import valor_btc, bloco_num, block_date
 from twitter import twittar
+
+locale.setlocale(locale.LC_ALL, '')
 
 
 class GracefulKiller:
@@ -25,16 +28,16 @@ class GracefulKiller:
 
 def bitcoin_price_check():
     try:
-        with open(db_path, 'rb') as db:
+        with open(valor_db_path, 'rb') as db:
             ultimo_valor = pickle.load(db)
     except FileNotFoundError:
         print('Rodando pela primeira vez.')
         try:
             valor_atual = valor_btc()
+            with open(valor_db_path, 'wb') as db:
+                pickle.dump(valor_atual, db, protocol=pickle.HIGHEST_PROTOCOL)
         except:
             return
-        with open(db_path, 'wb') as db:
-            pickle.dump(valor_atual, db, protocol=pickle.HIGHEST_PROTOCOL)
     else:
         try:
             valor_atual = valor_btc()
@@ -60,7 +63,7 @@ def bitcoin_price_check():
                     except:
                         return
                     print(msg)
-                with open(db_path, 'wb') as db:
+                with open(valor_db_path, 'wb') as db:
                     pickle.dump(valor_atual, db,
                                 protocol=pickle.HIGHEST_PROTOCOL)
             else:
@@ -72,16 +75,66 @@ def bitcoin_price_check():
 
 
 def halving_check():
-    pass
+    try:
+        with open(bloco_db_path, 'rb') as db:
+            ultimo_bloco = pickle.load(db)
+    except FileNotFoundError:
+        print('Analisando blocos pela primeira vez.')
+        try:
+            cur_bloco = bloco_num()
+            with open(bloco_db_path, 'wb') as db:
+                pickle.dump(cur_bloco, db, protocol=pickle.HIGHEST_PROTOCOL)
+        except:
+            return
+
+    halving_check_num = 0
+
+    while halving_check_num < ultimo_bloco:
+        halving_check_num += 210000
+
+    cur_bloco = bloco_num()
+    ano = datetime.now().strftime('%Y')
+
+    if cur_bloco >= halving_check_num > ultimo_bloco:
+        try:
+            block_creation_stamp = block_date(halving_check_num)
+        except:
+            print('Não foi possível acessar data do bloco. Tentando na '
+                  'próxima ronda.')
+            return
+
+        block_creation_date_obj = datetime.fromtimestamp(block_creation_stamp)
+
+        block_day = block_creation_date_obj.strftime('%d/%m')
+        block_hour = block_creation_date_obj.strftime('%H:%M')
+
+        msg = f'⚠ O Bitcoin Halving de {ano} aconteceu!\n' \
+              f'O bloco {halving_check_num:n} foi criado ' \
+              f'às {block_hour} de {block_day}.'
+        try:
+            twittar(msg)
+        except:
+            return
+    else:
+        print(f"Halving ainda não aconteceu. Bloco atual: {cur_bloco} | "
+              f"Halving em: {halving_check_num} | "
+              f"Faltam: {halving_check_num - cur_bloco}")
+
+    with open(bloco_db_path, 'wb') as db:
+        pickle.dump(cur_bloco, db,
+                    protocol=pickle.HIGHEST_PROTOCOL)
 
 
 if __name__ == '__main__':
     work_dir = os.path.dirname(os.path.realpath(__file__))
-    db_path = os.path.normpath('{}/ultimo_valor.db'.format(work_dir))
+    valor_db_path = os.path.normpath('{}/ultimo_valor.db'.format(work_dir))
+    bloco_db_path = os.path.normpath('{}/ultimo_bloco.db'.format(work_dir))
 
     killer = GracefulKiller()
     while not killer.kill_now:
         bitcoin_price_check()
+        halving_check()
+        print()
         time.sleep(randint(300, 900))
 
     print("Parando execução.")
