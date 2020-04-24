@@ -3,6 +3,7 @@ import pickle
 import signal
 import time
 from datetime import datetime
+from random import randint
 
 from money.currency import Currency
 from money.money import Money
@@ -78,6 +79,6 @@ if __name__ == '__main__':
                 time.sleep(900)
                 continue
             else:
-                time.sleep(450)
+                time.sleep(randint(300, 900))
 
     print("Parando execução.")
