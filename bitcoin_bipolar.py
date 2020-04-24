@@ -47,13 +47,12 @@ if __name__ == '__main__':
                 diferenca = round(abs(valor_atual - ultimo_valor), 2)
 
                 if diferenca > 600:
-                    valor_reais = Money(str(valor_atual), Currency.BRL).format(
-                        'pt_BR')
+                    valor_reais = Money(str(valor_atual), Currency.BRL). \
+                        format('pt_BR')
                     hora = datetime.now().strftime('%H:%M')
 
                     if valor_atual > ultimo_valor:
-                        msg = "Bitcoin subiu :) - {} às {}".format(valor_reais,
-                                                                   hora)
+                        msg = f"🟢 Bitcoin subiu :) - {valor_reais} às {hora}"
                         try:
                             twittar(msg)
                         except:
@@ -61,8 +60,7 @@ if __name__ == '__main__':
                             continue
                         print(msg)
                     elif ultimo_valor > valor_atual:
-                        msg = "Bitcoin caiu :( - {} às {}".format(valor_reais,
-                                                                  hora)
+                        msg = f"🔴 Bitcoin caiu :( - {valor_reais} às {hora}"
                         try:
                             twittar(msg)
                         except:
@@ -73,7 +71,9 @@ if __name__ == '__main__':
                         pickle.dump(valor_atual, db,
                                     protocol=pickle.HIGHEST_PROTOCOL)
                 else:
-                    print('Diferença insignificante para ser postada.')
+                    print(f'Diferença insignificante para ser postada. Ultimo '
+                          f'valor: {ultimo_valor} | Valor a'
+                          f'tual: {valor_atual} | Diferença: {diferenca}')
             except:
                 time.sleep(900)
                 continue
