@@ -66,9 +66,9 @@ def bitcoin_price_check():
                 dia = datetime.now().strftime('%d/%m/%Y')
 
                 if subiu:
-                    msg = f"🟢 Bitcoin subiu :)\n" \
+                    msg = f"🟢 Bitcoin subiu :)\n\n" \
                           f"🇧🇷 {valor_reais}\n" \
-                          f"🇺🇸 {valor_dolar}\n" \
+                          f"🇺🇸 {valor_dolar}\n\n" \
                           f"Em {dia} às {hora}."
                     try:
                         twittar(msg)
@@ -80,9 +80,9 @@ def bitcoin_price_check():
                         traceback.print_exc()
                         return
                 else:
-                    msg = f"🔴 Bitcoin caiu :(\n" \
+                    msg = f"🔴 Bitcoin caiu :(\n\n" \
                           f"🇧🇷 {valor_reais}\n" \
-                          f"🇺🇸 {valor_dolar}\n" \
+                          f"🇺🇸 {valor_dolar}\n\n" \
                           f"Em {dia} às {hora}."
                     try:
                         twittar(msg)
