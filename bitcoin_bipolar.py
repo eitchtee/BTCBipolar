@@ -123,8 +123,12 @@ def halving_check():
 
     while halving_check_num < ultimo_bloco:
         halving_check_num += 210000
+    try:
+        cur_bloco = bloco_num()
+    except:
+        traceback.print_exc()
+        return
 
-    cur_bloco = bloco_num()
     ano = datetime.now().strftime('%Y')
 
     if cur_bloco >= halving_check_num > ultimo_bloco:
