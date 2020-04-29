@@ -1,14 +1,18 @@
 import requests
 
 
-def valor_btc(moeda: str = 'BRL'):
+def valor_btc(moeda: str = 'BRL', segunda_moeda: str = "USD"):
     api_link = "https://blockchain.info/ticker"
 
     request = requests.get(api_link)
     result_list = request.json()
-    valor = result_list[moeda]["last"]
+    moeda_valor = result_list[moeda]["last"]
 
-    return valor
+    if segunda_moeda:
+        usd_valor = result_list[segunda_moeda]["last"]
+        return moeda_valor, usd_valor
+    else:
+        return moeda_valor
 
 
 def bloco_num():
