@@ -15,5 +15,5 @@ jobs:
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: | 
-            cd ${{ secrets.PROJECT_PATH }} && git pull && python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
+            cd ${{ secrets.PROJECT_PATH }} && git pull
             python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
