@@ -8,10 +8,12 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v2.1.1
-      - name: Push to server
+      - name: Enviar para servidor e Reiniciar Instância
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_IP }}
           username: ${{ secrets.SERVER_USERNAME }}
           password: ${{ secrets.SERVER_PASSWORD }}
-          script: cd ${{ secrets.PROJECT_PATH }} && git pull && python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
+          script: | 
+            cd ${{ secrets.PROJECT_PATH }} && git pull && python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
+            python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
