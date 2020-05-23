@@ -16,4 +16,4 @@ jobs:
           password: ${{ secrets.SERVER_PASSWORD }}
           script: | 
             cd ${{ secrets.PROJECT_PATH }} && git pull
-            python3 -u ${{ secrets.RESTART_SCRIPT_PATH }}
+            python3 -u ${{ secrets.RESTART_SCRIPT_PATH }} "Bitcoin Bipolar"
