@@ -1,7 +1,7 @@
 import requests
 
 
-def valor_btc(moeda: str = 'BRL', segunda_moeda: str = "USD"):
+def valor_btc(moeda: str = 'BRL', segunda_moeda= "USD"):
     api_link = "https://blockchain.info/ticker"
 
     request = requests.get(api_link)
