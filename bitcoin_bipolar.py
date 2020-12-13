@@ -31,7 +31,7 @@ def checar_diferenca(ultimo_valor, valor_atual):
     valor_minimo = 400
     diferenca = round(abs(valor_atual - ultimo_valor), 2)
 
-    return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor
+    return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor, aumento_porcentagem
 
 
 def bitcoin_price_check():
@@ -43,7 +43,7 @@ def bitcoin_price_check():
     except FileNotFoundError:
         print('Rodando pela primeira vez.')
         try:
-            valor_atual_brl = valor_btc()
+            valor_atual_brl = valor_btc(segunda_moeda=None)
             with open(valor_db_path, 'wb') as db:
                 pickle.dump(valor_atual_brl, db,
                             protocol=pickle.HIGHEST_PROTOCOL)
