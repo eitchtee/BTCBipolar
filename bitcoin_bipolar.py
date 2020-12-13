@@ -30,6 +30,9 @@ class GracefulKiller:
 def checar_diferenca(ultimo_valor, valor_atual):
     valor_minimo = 400
     diferenca = round(abs(valor_atual - ultimo_valor), 2)
+    aumento = valor_atual - ultimo_valor
+    aumento_porcentagem = aumento / ultimo_valor
+    aumento_porcentagem = "{:.2%}".format(aumento_porcentagem)
 
     return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor, aumento_porcentagem
 
@@ -54,8 +57,8 @@ def bitcoin_price_check():
         try:
             valor_atual_brl, valor_atual_usd = valor_btc()
 
-            dif_check, dif_valor, subiu = checar_diferenca(ultimo_valor,
-                                                           valor_atual_brl)
+            dif_check, dif_valor, subiu, porcentagem = checar_diferenca(ultimo_valor,
+                                                                        valor_atual_brl)
 
             if dif_check:
                 valor_reais = Money(str(valor_atual_brl), Currency.BRL). \
@@ -66,7 +69,7 @@ def bitcoin_price_check():
                 dia = datetime.now().strftime('%d/%m/%Y')
 
                 if subiu:
-                    msg = f"🟢 Bitcoin subiu :)\n\n" \
+                    msg = f"🟢 Bitcoin subiu :) [{porcentagem}]\n\n" \
                           f"🇧🇷 {valor_reais}\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
                           f"Em {dia} às {hora}."
@@ -75,12 +78,13 @@ def bitcoin_price_check():
                         print(f"🟢 Bitcoin subiu. "
                               f'Último valor: {ultimo_valor} | '
                               f'Valor atual: {valor_atual_brl} | '
-                              f'Diferença: {dif_valor}')
+                              f'Diferença: {dif_valor} | '
+                              f'Porcentagem: {porcentagem}')
                     except:
                         traceback.print_exc()
                         return
                 else:
-                    msg = f"🔴 Bitcoin caiu :(\n\n" \
+                    msg = f"🔴 Bitcoin caiu :( [{porcentagem}]\n\n" \
                           f"🇧🇷 {valor_reais}\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
                           f"Em {dia} às {hora}."
@@ -89,7 +93,8 @@ def bitcoin_price_check():
                         print(f"🔴 Bitcoin caiu. "
                               f'Último valor: {ultimo_valor} | '
                               f'Valor atual: {valor_atual_brl} | '
-                              f'Diferença: {dif_valor}')
+                              f'Diferença: {dif_valor} | '
+                              f'Porcentagem: {porcentagem}')
                     except:
                         traceback.print_exc()
                         return
