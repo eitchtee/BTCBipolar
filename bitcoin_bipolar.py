@@ -29,10 +29,12 @@ class GracefulKiller:
 
 def checar_diferenca(ultimo_valor, valor_atual):
     valor_minimo = 400
+
     diferenca = round(abs(valor_atual - ultimo_valor), 2)
+
     aumento = valor_atual - ultimo_valor
     aumento_porcentagem = aumento / ultimo_valor
-    aumento_porcentagem = "{:.2%}".format(aumento_porcentagem)
+    aumento_porcentagem = "{:+.2%}".format(aumento_porcentagem).replace('.', ',')
 
     return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor, aumento_porcentagem
 
