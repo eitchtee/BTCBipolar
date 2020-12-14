@@ -48,7 +48,7 @@ def bitcoin_price_check():
     except FileNotFoundError:
         print('Rodando pela primeira vez.')
         try:
-            valor_atual_brl = valor_btc(segunda_moeda=None)
+            valor_atual_brl = valor_btc(segunda_moeda=None)[0]
             with open(valor_db_path, 'wb') as db:
                 pickle.dump(valor_atual_brl, db,
                             protocol=pickle.HIGHEST_PROTOCOL)
