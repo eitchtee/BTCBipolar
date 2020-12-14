@@ -57,7 +57,7 @@ def bitcoin_price_check():
             return
     else:
         try:
-            valor_atual_brl, valor_atual_usd = valor_btc()
+            valor_atual_brl, brl_24hr, valor_atual_usd, usd_24hr = valor_btc()
 
             dif_check, dif_valor, subiu, porcentagem = checar_diferenca(ultimo_valor,
                                                                         valor_atual_brl)
@@ -74,7 +74,8 @@ def bitcoin_price_check():
                     msg = f"🟢 Bitcoin subiu :)\n\n" \
                           f"🇧🇷 {valor_reais} ({porcentagem})\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
-                          f"Em {dia} às {hora}."
+                          f"📊 24h: {brl_24hr}\n\n" \
+                          f"🗓️ Em {dia} às {hora}."
                     try:
                         twittar(msg)
                         print(f"🟢 Bitcoin subiu. "
@@ -89,7 +90,8 @@ def bitcoin_price_check():
                     msg = f"🔴 Bitcoin caiu :(\n\n" \
                           f"🇧🇷 {valor_reais} ({porcentagem})\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
-                          f"Em {dia} às {hora}."
+                          f"📊 24h: {brl_24hr}\n\n" \
+                          f"🗓️ Em {dia} às {hora}."
                     try:
                         twittar(msg)
                         print(f"🔴 Bitcoin caiu. "
