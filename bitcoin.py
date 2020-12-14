@@ -4,15 +4,19 @@ from pycoingecko import CoinGeckoAPI
 
 def valor_btc(moeda: str = 'BRL', segunda_moeda="USD"):
     cg = CoinGeckoAPI()
-    result = cg.get_price(ids='bitcoin', vs_currencies='usd,brl', include_24hr_change='true')
-
+    result = cg.get_price(ids='bitcoin', vs_currencies='{},{}'.format(moeda, segunda_moeda), include_24hr_change='true')
     moeda_valor = result['bitcoin'][moeda.lower()]
+    moeda_24_hrs = result['bitcoin']['{}_24h_change'.format(moeda.lower())] / 100
+    moeda_24_hrs = "{:+,.2%}".format(moeda_24_hrs).replace('.', ',')
 
     if segunda_moeda:
         segunda_moeda_valor = result['bitcoin'][segunda_moeda.lower()]
-        return moeda_valor, segunda_moeda_valor
+        segunda_moeda_24_hrs = result['bitcoin']['{}_24h_change'.format(segunda_moeda.lower())] / 100
+        segunda_moeda_24_hrs = "{:+.2%}".format(segunda_moeda_24_hrs).replace('.', ',')
+
+        return moeda_valor, moeda_24_hrs, segunda_moeda_valor, segunda_moeda_24_hrs
     else:
-        return moeda_valor
+        return moeda_valor, moeda_24_hrs
 
 
 def bloco_num():
