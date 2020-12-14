@@ -1,16 +1,16 @@
 import requests
+from pycoingecko import CoinGeckoAPI
 
 
-def valor_btc(moeda: str = 'BRL', segunda_moeda= "USD"):
-    api_link = "https://blockchain.info/ticker"
+def valor_btc(moeda: str = 'BRL', segunda_moeda="USD"):
+    cg = CoinGeckoAPI()
+    result = cg.get_price(ids='bitcoin', vs_currencies='usd,brl', include_24hr_change='true')
 
-    request = requests.get(api_link)
-    result_list = request.json()
-    moeda_valor = result_list[moeda]["last"]
+    moeda_valor = result['bitcoin'][moeda.lower()]
 
     if segunda_moeda:
-        usd_valor = result_list[segunda_moeda]["last"]
-        return moeda_valor, usd_valor
+        segunda_moeda_valor = result['bitcoin'][segunda_moeda.lower()]
+        return moeda_valor, segunda_moeda_valor
     else:
         return moeda_valor
 
