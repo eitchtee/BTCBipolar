@@ -24,4 +24,4 @@
 ## O que é?
 Este é o código que mantém a conta [@BTC_Bipolar](https://twitter.com/btc_bipolar) funcionando, verificando por alterações notáveis no preço do _BRLxBTC_ e se ocorreu um _halving_.
 
-Ele consome a API do Twitter para postagem das atualizações, e as APIs do [coingecko.com](https://www.coingecko.com/en/api) e [blockchain.com](https://www.blockchain.com/) (_antiga blockchain.info_) para verificação dos preços e blocos minerados.
+Ele consome a API do Twitter para postagem das atualizações, e as APIs do [coingecko.com](https://www.coingecko.com/en/api) e [blockchain.com](https://www.blockchain.com/) (_antiga blockchain.info_) para verificação dos preços, blocos minerados até o momento e variação do preço nas últimas 24 horas.
