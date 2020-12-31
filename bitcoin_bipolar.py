@@ -34,9 +34,15 @@ def checar_diferenca(ultimo_valor, valor_atual):
 
     aumento = valor_atual - ultimo_valor
     aumento_porcentagem = aumento / ultimo_valor
+
+    if aumento_porcentagem >= 0:
+        porcentagem_status = "📈"
+    else:
+        porcentagem_status = "📉"
+
     aumento_porcentagem = "{:+.2%}".format(aumento_porcentagem).replace('.', ',')
 
-    return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor, aumento_porcentagem
+    return diferenca > valor_minimo, diferenca, valor_atual > ultimo_valor, aumento_porcentagem, porcentagem_status
 
 
 def bitcoin_price_check():
@@ -59,7 +65,7 @@ def bitcoin_price_check():
         try:
             valor_atual_brl, brl_24hr, valor_atual_usd, usd_24hr = valor_btc()
 
-            dif_check, dif_valor, subiu, porcentagem = checar_diferenca(ultimo_valor,
+            dif_check, dif_valor, subiu, porcentagem, porcentagem_status = checar_diferenca(ultimo_valor,
                                                                         valor_atual_brl)
 
             if dif_check:
@@ -74,7 +80,7 @@ def bitcoin_price_check():
                     msg = f"🟢 Bitcoin subiu :)\n\n" \
                           f"🇧🇷 {valor_reais} ({porcentagem})\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
-                          f"📊 24h: {brl_24hr}\n\n" \
+                          f"{porcentagem_status} 24h: {brl_24hr}\n\n" \
                           f"🗓️ Em {dia} às {hora}."
                     try:
                         twittar(msg)
@@ -90,7 +96,7 @@ def bitcoin_price_check():
                     msg = f"🔴 Bitcoin caiu :(\n\n" \
                           f"🇧🇷 {valor_reais} ({porcentagem})\n" \
                           f"🇺🇸 {valor_dolar}\n\n" \
-                          f"📊 24h: {brl_24hr}\n\n" \
+                          f"{porcentagem_status} 24h: {brl_24hr}\n\n" \
                           f"🗓️ Em {dia} às {hora}."
                     try:
                         twittar(msg)
