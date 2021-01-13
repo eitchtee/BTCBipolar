@@ -193,6 +193,6 @@ if __name__ == '__main__':
         bitcoin_price_check()
         halving_check()
         print("---")  # Separa os logs de cada execução.
-        time.sleep(randint(180, 1800))
+        time.sleep(randint(1200, 3600))
 
     print("Parando execução.")
