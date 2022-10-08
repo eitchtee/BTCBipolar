@@ -20,7 +20,7 @@ def valor_btc(moeda: str = 'BRL', segunda_moeda="USD"):
 def bloco_num():
     api_link = "https://blockchain.info/q/getblockcount"
 
-    request = requests.get(api_link)
+    request = requests.get(api_link, timeout=180)
     result = int(request.text)
 
     return result
@@ -29,7 +29,7 @@ def bloco_num():
 def block_date(block_num):
     api_link = f"https://blockchain.info/rawblock/{block_num}"
 
-    request = requests.get(api_link)
+    request = requests.get(api_link, timeout=180)
     result = request.json()
 
     return int(result['time'])
