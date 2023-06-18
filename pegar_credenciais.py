@@ -1,21 +1,20 @@
-# coding=utf-8
+# # coding=utf-8
+from config import CONSUMER_KEY, CONSUMER_SECRET, OAUTH_BEARER
 import tweepy
-from config import CONSUMER_KEY, CONSUMER_SECRET
 
+oauth1_user_handler = tweepy.OAuth1UserHandler(
+    CONSUMER_KEY, CONSUMER_SECRET,
+    callback="http://127.0.0.1"
+)
+print("Visite esse link e autorize o seu aplicativo ==> " + oauth1_user_handler.get_authorization_url())
+print("Coloque o oauth_verifier abaixo")
 
-# authenticating twitter consumer key
-auth = tweepy.OAuthHandler(CONSUMER_KEY, CONSUMER_SECRET)
-auth.secure = True
-authUrl = auth.get_authorization_url()
+oauth_verifier = input().strip()
 
-# go to this url
-print("Visite esse link e autorize o seu aplicativo ==> " + authUrl)
-print("Coloque o PIN informado abaixo")
-
-# writing access tokes to file
-pin = input().strip()
-token = auth.get_access_token(verifier=pin)
+access_token, access_token_secret = oauth1_user_handler.get_access_token(
+    oauth_verifier
+)
 
 print('Use os tokens a seguir nas suas configurações.')
-print("Acess Token: " + token[0])
-print("Acess Token Secret: " + token[1])
+print("Acess Token: " + access_token)
+print("Acess Token Secret: " + access_token_secret)
